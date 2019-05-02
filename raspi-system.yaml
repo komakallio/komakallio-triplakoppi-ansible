@@ -1,0 +1,36 @@
+- hosts: all
+  remote_user: pi
+  become: yes
+
+  tasks:
+  - name: ensure system packages are up to date
+    apt:
+      upgrade: yes
+
+  - name: add nodejs repositories
+    shell: curl -sL https://deb.nodesource.com/setup_8.x | bash -
+
+  - name: ensure additional packages are installed
+    apt:
+      name: ['git', 'redis-server', 'libudev-dev', 'python-serial', 'nodejs', 'bluetooth', 'bluez', 'libbluetooth-dev', 'libcap2-bin']
+      state: present
+
+  - name: grant nodejs capabilities to read raw bluetooth packets
+    shell: setcap cap_net_raw+eip $(eval readlink -f `which node`)
+
+  - name: install pm2 task manager
+    npm:
+      name: pm2
+      global: yes
+
+  - name: add komakallio user
+    user:
+      name: komakallio
+      password: komakallio
+      shell: /bin/bash
+
+  - name: set up ssh key for komakallio
+    authorized_key:
+      user: komakallio
+      key: ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAoptZvq6orEADznM8CRhGLm5XinbIBNzQUoxxfQ8c+cR4bZvx9t79oirRM07LQATj7r9ybh1CYzqS7xAeaUHd4IMQwM9Df+6VUcPJ7SPOcvSKrwYtUgFQyGSCZmU6t217J0qYOUHV8FJ8GOI4r30K+wp2g5HGlK2VwRENCachNs4aMHXIwb33PakHuYlNAYrZSy9IQycBRnFo3jF6V/yYDe1J7L7UFxlwMbPtuZlRDKMkRP7/zFERIKxjsghR/GpYvE8xclGgUcPWd21oAoyoTsbtMid4wGcf1QjROoWUEtB5ycnVCTp4jzpQ0gKfq1B6hrmCUyXbWd5M+CEYybUd1w== Amb/JS rsa-key-20030108 (issuer Amb/JKn)
+           ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCiv7guFT7bjj2QtVmYhlSWuCYwVJJnylsV55JDIpPnHsSlN2otXhumWGmE+IdhbY8MgD5Bu0dfpMa2pXbEwqyyThhjQNP5qT2hzYIfOa595oJR4SvkgM5f7bcMYKMpLRLnFMDlNBCUh/L54Oj/gnfml7v4G8M4xoX6ZeN4MKD/ZtzC7VFb3Kjotc0SmB2KsoHzQ6nAWy1+2sa3gFGXq/KLeYo6ULmX4LGQArLGtiRMi9NlvvZWQ7j1nTkjW614liWVpBe12A/5fIGkItRFZwdmsGnrVMWUxYG60vwbs6Er49NkQ4FIygNMKzUrsGBQTXs6kdZ5YHX+CLxULuUOkC47 vehnae@komakone
