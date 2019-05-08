@@ -14,6 +14,16 @@
       chdir: /home/komakallio/komaserver
     when: komaserver.changed
 
+  - name: install python3 modules
+    pip:
+      name: ['numpy', 'scipy', 'Pillow']
+      executable: /usr/bin/pip3
+
+  - name: install python 2.x modules
+    pip:
+      name: ['requests']
+      executable: /usr/bin/pip
+
   - name: clone wxt520 repository
     git:
       repo: 'https://github.com/komakallio/wxt520.git'
