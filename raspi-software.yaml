@@ -14,6 +14,14 @@
       chdir: /home/komakallio/komaserver
     when: komaserver.changed
 
+  - name: install pm2-logrotate
+    shell: pm2 install pm2-logrotate && pm2 set pm2-logrotate:max_size 1M && pm2 set pm2-logrotate:compress true && pm2 set pm2-logrotate:retain 3
+
+  - name: copy pm2 ecosystem file
+    copy:
+      dest: /home/komakallio/ecosystem.config.js
+      src: files/pm2/ecosystem.config.js
+
   - name: install python3 modules
     pip:
       name: ['numpy', 'scipy', 'Pillow']
@@ -79,3 +87,11 @@
       dest: /home/komakallio/bin
       src: files/bin/
       mode: 0755
+
+  - name: set up redis-cleanup cron job
+    cron:
+      name: "redis-cleanup"
+      minute: "0"
+      hour: "2"
+      job: "cd /home/komakallio/komaserver/weather && node /home/komakallio/komaserver/weather/redis-cleanup.js"
+
