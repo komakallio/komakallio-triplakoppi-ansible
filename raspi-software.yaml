@@ -14,8 +14,47 @@
       chdir: /home/komakallio/komaserver
     when: komaserver.changed
 
+  - name: copy hawkularrelay config
+    copy:
+      dest: /home/komakallio/komaserver/hawkularrelay
+      src: files/hawkularrelay/config.js
+    register: hawkularrelayconfig
+
+  - name: copy rain config
+    copy:
+      dest: /home/komakallio/komaserver/rain
+      src: files/rain/config.js
+    register: rainconfig
+
+  - name: copy roof config
+    copy:
+      dest: /home/komakallio/komaserver/roof
+      src: files/roof/config.js
+    register: roofconfig
+
+  - name: copy ruuvi config
+    copy:
+      dest: /home/komakallio/komaserver/ruuvi
+      src: files/ruuvi/config.js
+    register: ruuviconfig
+
+  - name: copy weather config
+    copy:
+      dest: /home/komakallio/komaserver/weather
+      src: files/weather/config.js
+    register: weatherconfig
+
+  - name: restart komaserver applications
+    shell: pm2 restart weather safety rain roof hawkularrelay ruuvi cpu
+    when: komaserver.changed or weatherconfig.changed or ruuviconfig.changed or roofconfig.changed or rainconfig.changed or hawkularrelayconfig.changed
+
+  - name: check if pm2-logrotate is installed
+    shell: pm2 ls | grep pm2-logrotate
+    register: pm2logrotateinstalled
+
   - name: install pm2-logrotate
     shell: pm2 install pm2-logrotate && pm2 set pm2-logrotate:max_size 1M && pm2 set pm2-logrotate:compress true && pm2 set pm2-logrotate:retain 3
+    when: pm2logrotateinstalled.rc != 0
 
   - name: copy pm2 ecosystem file
     copy:
@@ -24,63 +63,49 @@
 
   - name: install python3 modules
     pip:
-      name: ['numpy', 'scipy', 'Pillow']
+      name: ['numpy==1.16.3', 'scipy==1.2.1', 'Pillow==6.0.0']
       executable: /usr/bin/pip3
 
   - name: install python 2.x modules
     pip:
-      name: ['requests']
+      name: ['requests==2.21.0']
       executable: /usr/bin/pip
 
   - name: clone wxt520 repository
     git:
       repo: 'https://github.com/komakallio/wxt520.git'
       dest: /home/komakallio/wxt520
+    register: wxt520
+
+  - name: restart wxt520
+    shell: pm2 restart wxtserver
+    when: wxt520.changed
 
   - name: clone ip-cam-automation repository
     git:
       repo: 'https://github.com/komakallio/ip-cam-automation.git'
       dest: /home/komakallio/ip-cam-automation
-
-  - name: clone fmi-radar-safety repository
-    git:
-      repo: 'https://github.com/komakallio/fmi-radar-safety.git'
-      dest: /home/komakallio/fmi-radar-safety
-
-  - name: copy fmi-radar-safety config
-    copy:
-      dest: /home/komakallio/fmi-radar-safety
-      src: files/fmi-radar-safety/config.ini
+    register: ipcamautomation
 
   - name: copy ip-cam-automation config
     copy:
       dest: /home/komakallio/ip-cam-automation
       src: files/ip-cam-automation/config.ini
+    register: ipcamautomationconfig
 
-  - name: copy hawkularrelay config
-    copy:
-      dest: /home/komakallio/komaserver/hawkularrelay
-      src: files/hawkularrelay/config.js
+  - name: restart ip-cam-automation
+    shell: pm2 restart ip-cam-automation
+    when: ipcamautomation.changed or ipcamautomationconfig.changed
 
-  - name: copy rain config
-    copy:
-      dest: /home/komakallio/komaserver/rain
-      src: files/rain/config.js
+  - name: clone fmi-radar-safety repository
+    git:
+      repo: 'https://github.com/komakallio/fmi-radar-safety.git'
+      dest: /home/komakallio/fmi-radar-safety
+    register: fmiradarsafety
 
-  - name: copy roof config
-    copy:
-      dest: /home/komakallio/komaserver/roof
-      src: files/roof/config.js
-
-  - name: copy ruuvi config
-    copy:
-      dest: /home/komakallio/komaserver/ruuvi
-      src: files/ruuvi/config.js
-
-  - name: copy weather config
-    copy:
-      dest: /home/komakallio/komaserver/weather
-      src: files/weather/config.js
+  - name: restart fmi-radar-safety
+    shell: pm2 restart fmi-radar-safety
+    when: fmiradarsafety.changed
 
   - name: copy scripts
     copy:
