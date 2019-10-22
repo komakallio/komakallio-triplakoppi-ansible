@@ -20,9 +20,9 @@ module.exports = {
     cwd: 'komaserver/roof'
   },
   {
-    name: 'hawkularrelay',
-    script: 'hawkularrelay.js',
-    cwd: 'komaserver/hawkularrelay'
+    name: 'influxdbrelay',
+    script: 'influxdbrelay.js',
+    cwd: 'komaserver/influxdbrelay'
   },
   {
     name: 'ruuvi',

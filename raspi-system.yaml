@@ -12,7 +12,7 @@
 
   - name: ensure additional packages are installed
     apt:
-      name: ['git', 'redis-server', 'libudev-dev', 'python-serial', 'nodejs', 'bluetooth', 'bluez', 'libbluetooth-dev', 'libcap2-bin', 'python-pip', 'python3-pip', 'liblapack3', 'libblas3', 'libcblas3', 'libgfortran3', 'libatlas3-base', 'libatlas-base-dev', 'libjpeg9-dev']
+      name: ['git', 'redis-server', 'libudev-dev', 'python-serial', 'nodejs', 'bluetooth', 'bluez', 'libbluetooth-dev', 'libcap2-bin', 'python-pip', 'python3-pip', 'liblapack3', 'libblas3', 'libcblas3', 'libgfortran3', 'libatlas3-base', 'libatlas-base-dev', 'libjpeg9-dev', 'libopenjp2-7', 'libtiff5']
       state: present
 
   - name: grant nodejs capabilities to read raw bluetooth packets

@@ -9,16 +9,16 @@
     register: komaserver
 
   - name: update npm modules
-    shell: for m in safety rain weather roof hawkularrelay ruuvi cpu; do cd $m; npm install; cd -; done
+    shell: for m in safety rain weather roof influxdbrelay ruuvi cpu; do cd $m; npm install; cd -; done
     args:
       chdir: /home/komakallio/komaserver
     when: komaserver.changed
 
-  - name: copy hawkularrelay config
+  - name: copy influxdbrelay config
     copy:
-      dest: /home/komakallio/komaserver/hawkularrelay
-      src: files/hawkularrelay/config.js
-    register: hawkularrelayconfig
+      dest: /home/komakallio/komaserver/influxdbrelay
+      src: files/influxdbrelay/config.js
+    register: influxdbrelayconfig
 
   - name: copy rain config
     copy:
@@ -45,8 +45,8 @@
     register: weatherconfig
 
   - name: restart komaserver applications
-    shell: pm2 restart weather safety rain roof hawkularrelay ruuvi cpu
-    when: komaserver.changed or weatherconfig.changed or ruuviconfig.changed or roofconfig.changed or rainconfig.changed or hawkularrelayconfig.changed
+    shell: pm2 restart weather safety rain roof influxdbrelay ruuvi cpu
+    when: komaserver.changed or weatherconfig.changed or ruuviconfig.changed or roofconfig.changed or rainconfig.changed or influxdbrelayconfig.changed
 
   - name: check if pm2-logrotate is installed
     shell: pm2 ls | grep pm2-logrotate
