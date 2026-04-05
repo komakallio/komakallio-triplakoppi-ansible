@@ -50,5 +50,13 @@ module.exports = {
     script: 'radarsafety.py',
     cwd: 'fmi-radar-safety',
     interpreter: '/usr/bin/python3'
+  },
+  {
+    name: 'alpaca-server',
+    script: 'KomaAlpacaServer',
+    cwd: 'alpaca-server',
+    env: {
+      DOTNET_ENVIRONMENT: 'Production'
+    }
   }]
 };
