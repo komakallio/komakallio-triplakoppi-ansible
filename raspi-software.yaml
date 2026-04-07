@@ -126,6 +126,12 @@
       dest: /tmp/koma-alpaca.zip
     register: alpacaserver
 
+  - name: create Alpaca server destination dir
+    ansible.builtin.file:
+      path: /home/komakallio/alpaca-server/
+      state: directory
+      mode: '0755'
+
   - name: unzip Alpaca server archive
     ansible.builtin.unarchive:
       src: /tmp/koma-alpaca.zip
