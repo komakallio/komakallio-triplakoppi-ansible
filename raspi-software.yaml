@@ -10,6 +10,7 @@
   - name: check if pm2-logrotate is installed
     shell: pm2 ls | grep pm2-logrotate
     register: pm2logrotateinstalled
+    failed_when: false
 
   - name: install pm2-logrotate
     shell: pm2 install pm2-logrotate && pm2 set pm2-logrotate:max_size 1M && pm2 set pm2-logrotate:compress true && pm2 set pm2-logrotate:retain 3
