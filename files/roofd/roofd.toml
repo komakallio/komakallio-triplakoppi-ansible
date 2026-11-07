@@ -1,0 +1,59 @@
+# roofd site config for Komakallio Triplakoppi (Koppiraspi).
+# Code: https://github.com/komakallio/roofd
+# Secrets (Pushover, Telegram, healthchecks) are NOT here: they live only in
+# /etc/roofd/secrets.toml on Koppiraspi.
+#
+# Pier names match the ones Samuli's Alpaca server uses
+# (komaserver/ascom-alpaca appsettings.json), so it works unchanged.
+
+[[piers]]
+name = "West pier"          # Lauri, C8, NINA on lauri-mele
+
+[[piers]]
+name = "Center pier"        # Samuli, ML Astro One / OnStep (coming)
+
+[[piers]]
+name = "East pier"          # Jari's pier; a SeeStar for now, which fits under the roof
+needs_park = false          # set to true when a full-size rig is back
+
+[[people]]
+name = "lauri"
+piers = ["West pier", "East pier"]
+
+[[people]]
+name = "samuli"
+piers = ["Center pier"]
+
+[[people]]
+name = "jari"
+piers = []
+
+[roof]
+# Phase 1: follow the old roof server, never move the roof.
+mode = "watch"
+watch_url = "http://localhost:9000"
+serial_port = "/dev/ttyACM0"   # the Mega; for control mode later
+state_file = "/var/lib/roofd/state.json"
+
+[sensors]
+weather_api = "http://localhost:9001"
+apcupsd = "127.0.0.1:3551"
+
+[http]
+host = "0.0.0.0"
+# Not 9000/9002 while the old roof and safety services run.
+roof_port = 9100
+safety_port = 9102
+
+[location]
+latitude = 60.172867
+longitude = 24.388552
+
+[supervisor]
+software_park_grace_s = 180
+close_alarm_after_s = 300
+
+[supervisor.safety]
+max_age_s = 120
+wind_notice_ms = 10
+enclosure_alarm_below_c = -15
