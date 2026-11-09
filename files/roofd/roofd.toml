@@ -63,7 +63,7 @@ enclosure_alarm_below_c = -15
 [[park_sensors]]
 pier = "West pier"
 mac = "C9:F3:F5:74:14:79"
-name = "c8"
+name = "lauri"
 park = [-0.056, -0.040, 0.992]
 tolerance_deg = 3.0
 trusted = false
