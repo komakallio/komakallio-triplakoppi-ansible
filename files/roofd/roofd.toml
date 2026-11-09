@@ -57,3 +57,13 @@ close_alarm_after_s = 300
 max_age_s = 120
 wind_notice_ms = 10
 enclosure_alarm_below_c = -15
+
+# RuuviTag on the C8 (West pier). 2026-11-09: still lying flat on a table in
+# the koppi, so not trusted; the park vector is the table reading, for testing.
+[[park_sensors]]
+pier = "West pier"
+mac = "C9:F3:F5:74:14:79"
+name = "c8"
+park = [-0.056, -0.040, 0.992]
+tolerance_deg = 3.0
+trusted = false
