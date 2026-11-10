@@ -1,54 +1,74 @@
 module.exports = {
-  apps : [{
-    name: 'weather',
-    script: 'server.js',
-    cwd: 'komaserver/weather'
-  },
-  {
-    name: 'cpu',
-    script: 'server.js',
-    cwd: 'komaserver/cpu'
-  },
-  {
-    name: 'rain',
-    script: 'server.js',
-    cwd: 'komaserver/rain'
-  },
-  {
-    name: 'roof',
-    script: 'server.js',
-    cwd: 'komaserver/roof'
-  },
-  {
-    name: 'influxdbrelay',
-    script: 'influxdbrelay.js',
-    cwd: 'komaserver/influxdbrelay'
-  },
-  {
-    name: 'ruuvi',
-    script: 'server.js',
-    cwd: 'komaserver/ruuvi'
-  },
-  {
-    name: 'safety',
-    script: 'server.js',
-    cwd: 'komaserver/safety'
-  },
-  {
-    name: 'wxtserver',
-    script: 'wxtserver.py',
-    cwd: 'wxt520'
-  },
-  {
-    name: 'ip-cam-automation',
-    script: 'ip-cam-automation.py',
-    cwd: 'ip-cam-automation',
-    interpreter: '/usr/bin/python3'
-  },
-  {
-    name: 'fmi-radar-safety',
-    script: 'radarsafety.py',
-    cwd: 'fmi-radar-safety',
-    interpreter: '/usr/bin/python3'
-  }]
+  apps: [
+    {
+      name: "weather",
+      script: "server.js",
+      cwd: "komaserver/weather",
+      watch: true,
+      ignore_watch: ["node_modules"],
+    },
+    {
+      name: "cpu",
+      script: "server.js",
+      cwd: "komaserver/cpu",
+      watch: true,
+      ignore_watch: ["node_modules"],
+    },
+    {
+      name: "rain",
+      script: "server.js",
+      cwd: "komaserver/rain",
+      watch: true,
+      ignore_watch: ["node_modules"],
+    },
+    {
+      name: "roof",
+      script: "server.js",
+      cwd: "komaserver/roof",
+      watch: true,
+      ignore_watch: ["node_modules"],
+    },
+    {
+      name: "influxdbrelay",
+      script: "influxdbrelay.js",
+      cwd: "komaserver/influxdbrelay",
+      watch: true,
+      ignore_watch: ["node_modules"],
+    },
+    {
+      name: "ruuvi",
+      script: "server.js",
+      cwd: "komaserver/ruuvi",
+      watch: true,
+      ignore_watch: ["node_modules"],
+    },
+    {
+      name: "safety",
+      script: "server.js",
+      cwd: "komaserver/safety",
+      watch: true,
+      ignore_watch: ["node_modules"],
+    },
+    {
+      name: "wxtserver",
+      script: "wxtserver.py",
+      cwd: "wxt520",
+      watch: true,
+    },
+    {
+      name: "ip-cam-automation",
+      script: "ip-cam-automation.py",
+      cwd: "ip-cam-automation",
+      interpreter: "/usr/bin/python3",
+      watch: true,
+    },
+    {
+      name: "fmi-radar-safety",
+      script: "radarsafety.py",
+      cwd: "fmi-radar-safety",
+      interpreter: "/usr/bin/python3",
+      watch: true,
+      ignore_watch: ["*.log", "*.png"],
+    },
+  ],
 };
